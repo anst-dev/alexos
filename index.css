@@ -31,8 +31,8 @@
   --color-brand-pink: #ff90e8;
   --color-brand-green: #22c55e;
 
-  --font-sans: 'Space Grotesk', 'Inter', system-ui, -apple-system, sans-serif;
-  --font-display: 'Space Grotesk', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-sans: 'Inter', 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  --font-display: 'Inter', 'Space Grotesk', system-ui, -apple-system, sans-serif;
   --font-mono: 'Space Mono', 'Consolas', 'Monaco', monospace;
 
   --shadow-hard: 4px 4px 0px 0px #000000;
@@ -80,7 +80,7 @@
 }
 
 body {
-  font-family: 'Space Grotesk', 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: 'Inter', 'Space Grotesk', system-ui, -apple-system, sans-serif;
   background-color: #f0f0f0;
   background-image: radial-gradient(#d4d4d4 1px, transparent 1px);
   background-size: 24px 24px;

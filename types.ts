@@ -75,6 +75,24 @@ export interface JournalEntry {
   linkedGoalId?: string; // Liên kết với mục tiêu nào
 }
 
+// Focus Task cho Flowtime
+export interface FocusTask {
+  id: string;
+  title: string;                    // Tên task
+  startTime: number | null;         // Timestamp bắt đầu
+  endTime: number | null;           // Timestamp kết thúc
+  duration: number;                 // Thời lượng làm việc (ms)
+  status: 'pending' | 'active' | 'completed' | 'resting';
+  logs: string[];                   // Log những gì đã làm
+  rating: number | null;            // Đánh giá 1-10
+  notes: string;                    // Ghi chú
+  restStartTime: number | null;     // Thời gian bắt đầu nghỉ
+  restEndTime: number | null;       // Thời gian kết thúc nghỉ
+  restDuration: number;             // Thời gian đã nghỉ (ms)
+  suggestedRestTime: number;        // Thời gian nghỉ đề xuất (ms)
+  createdAt: number;
+}
+
 // Tính toán "Sắp tới" từ goals
 export interface UpcomingDeadline {
   goalId: string;
