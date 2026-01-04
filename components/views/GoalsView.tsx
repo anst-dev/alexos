@@ -10,12 +10,12 @@ import { Icon } from '../ui/Icon';
 const QUICK_NOTE_WEBHOOK_URL = 'https://unsupercilious-leonarda-unreaving.ngrok-free.dev/webhook/log_app';
 
 export const GoalsView: React.FC = () => {
-  const { 
-    habits, 
-    goals, 
-    updateGoalProgress, 
-    addGoal, 
-    deleteGoal, 
+  const {
+    habits,
+    goals,
+    updateGoalProgress,
+    addGoal,
+    deleteGoal,
     updateGoal,
     addMilestone,
     toggleMilestone,
@@ -24,7 +24,7 @@ export const GoalsView: React.FC = () => {
     categoryProgress,
   } = useApp();
   const { showToast } = useToast();
-  
+
   // Edit Modal State
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingGoal, setEditingGoal] = useState<Goal | null>(null);
@@ -201,8 +201,8 @@ export const GoalsView: React.FC = () => {
             </div>
             <div className="p-6 space-y-4">
               {habits.slice(0, 5).map((habit) => (
-                <div 
-                  key={habit.id} 
+                <div
+                  key={habit.id}
                   className={`flex items-center justify-between p-3 border-2 border-neo-black shadow-hard-sm ${habit.completedToday ? 'bg-gray-100 opacity-60' : 'bg-white'}`}
                 >
                   <div className="flex items-center gap-4">
@@ -248,7 +248,7 @@ export const GoalsView: React.FC = () => {
           <div className="flex items-center justify-between border-b-2 border-neo-black pb-2">
             <h3 className="text-xl font-display uppercase">Mục tiêu đang chạy</h3>
             <div className="flex gap-2">
-              <button 
+              <button
                 onClick={() => setIsAddModalOpen(true)}
                 className="px-3 py-1 text-xs font-bold uppercase border-2 border-neo-black bg-neo-black text-white hover:bg-neo-lime hover:text-black transition-colors flex items-center gap-1"
               >
@@ -262,26 +262,26 @@ export const GoalsView: React.FC = () => {
             const daysLeft = getDaysLeft(goal.deadline);
             const isOverdue = daysLeft < 0;
             const isUrgent = daysLeft >= 0 && daysLeft <= 7;
-            
+
             return (
               <div key={goal.id} className="bg-white border-4 border-neo-black shadow-hard-lg hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-hard transition-all group relative">
                 {/* Edit Button */}
-                <button 
+                <button
                   onClick={(e) => { e.stopPropagation(); openEditModal(goal); }}
-                  className="absolute top-2 right-12 bg-white border-2 border-neo-black p-1 text-neo-blue opacity-0 group-hover:opacity-100 transition-opacity z-10 hover:bg-neo-blue hover:text-white"
+                  className="absolute top-2 right-12 bg-white border-2 border-neo-black p-1 text-neo-blue transition-opacity z-10 hover:bg-neo-blue hover:text-white"
                   title="Chỉnh sửa"
                 >
                   <Icon name="edit" size={18} />
                 </button>
                 {/* Delete Button */}
-                <button 
-                  onClick={(e) => { e.stopPropagation(); if(confirm('Bạn có chắc muốn xóa mục tiêu này?')) deleteGoal(goal.id); }}
-                  className="absolute top-2 right-2 bg-white border-2 border-neo-black p-1 text-neo-red opacity-0 group-hover:opacity-100 transition-opacity z-10 hover:bg-neo-red hover:text-white"
+                <button
+                  onClick={(e) => { e.stopPropagation(); if (confirm('Bạn có chắc muốn xóa mục tiêu này?')) deleteGoal(goal.id); }}
+                  className="absolute top-2 right-2 bg-white border-2 border-neo-black p-1 text-neo-red transition-opacity z-10 hover:bg-neo-red hover:text-white"
                   title="Xóa mục tiêu"
                 >
                   <Icon name="delete" size={18} />
                 </button>
-                
+
                 {/* Image Header */}
                 <div className="h-32 bg-cover bg-center relative border-b-4 border-neo-black grayscale group-hover:grayscale-0 transition-all duration-500" style={{ backgroundImage: `url("${goal.image}")` }}>
                   <div className="absolute inset-0 bg-black/40"></div>
@@ -290,7 +290,7 @@ export const GoalsView: React.FC = () => {
                     <h4 className="text-white font-display uppercase font-bold text-2xl drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]">{goal.title}</h4>
                   </div>
                 </div>
-                
+
                 {/* Content */}
                 <div className="p-5">
                   {/* Progress */}
@@ -299,18 +299,18 @@ export const GoalsView: React.FC = () => {
                     <span className={`${goal.colorClass} text-white px-1`}>{goal.progress}%</span>
                   </div>
                   <ProgressBar progress={goal.progress} colorClass={goal.colorClass} />
-                  
+
                   {/* Milestones (Tasks con) */}
                   {goal.milestones.length > 0 && (
                     <div className="mt-4 pt-4 border-t-2 border-dashed border-gray-200">
                       <p className="text-xs font-bold uppercase text-gray-500 mb-2">Nhiệm vụ con</p>
                       <div className="space-y-2">
                         {goal.milestones.map(milestone => (
-                          <div 
+                          <div
                             key={milestone.id}
                             className="flex items-center justify-between gap-2 text-sm"
                           >
-                            <button 
+                            <button
                               onClick={() => toggleMilestone(goal.id, milestone.id)}
                               className="flex items-center gap-2 flex-1 text-left"
                             >
@@ -319,7 +319,7 @@ export const GoalsView: React.FC = () => {
                               </div>
                               <span className={milestone.completed ? 'line-through text-gray-400' : ''}>{milestone.title}</span>
                             </button>
-                            <button 
+                            <button
                               onClick={() => deleteMilestone(goal.id, milestone.id)}
                               className="text-gray-300 hover:text-neo-red"
                             >
@@ -330,11 +330,11 @@ export const GoalsView: React.FC = () => {
                       </div>
                     </div>
                   )}
-                  
+
                   {/* Add Milestone */}
                   {addingMilestoneForGoal === goal.id ? (
                     <div className="mt-3 flex gap-2">
-                      <input 
+                      <input
                         type="text"
                         value={newMilestoneTitle}
                         onChange={(e) => setNewMilestoneTitle(e.target.value)}
@@ -343,13 +343,13 @@ export const GoalsView: React.FC = () => {
                         autoFocus
                         onKeyDown={(e) => e.key === 'Enter' && handleAddMilestone(goal.id)}
                       />
-                      <button 
+                      <button
                         onClick={() => handleAddMilestone(goal.id)}
                         className="bg-neo-black text-white px-2 py-1 text-xs font-bold"
                       >
                         Thêm
                       </button>
-                      <button 
+                      <button
                         onClick={() => { setAddingMilestoneForGoal(null); setNewMilestoneTitle(''); }}
                         className="border-2 border-neo-black px-2 py-1 text-xs font-bold"
                       >
@@ -357,14 +357,14 @@ export const GoalsView: React.FC = () => {
                       </button>
                     </div>
                   ) : (
-                    <button 
+                    <button
                       onClick={() => setAddingMilestoneForGoal(goal.id)}
                       className="mt-3 text-xs font-bold text-gray-400 hover:text-neo-black flex items-center gap-1"
                     >
                       <Icon name="add" size={12} /> Thêm nhiệm vụ con
                     </button>
                   )}
-                  
+
                   {/* Footer */}
                   <div className="flex items-center justify-between pt-4 mt-4 border-t-2 border-dashed border-gray-300">
                     <div className="flex items-center gap-2">
@@ -373,7 +373,7 @@ export const GoalsView: React.FC = () => {
                         {formatDeadlineDisplay(goal.deadline)}
                       </span>
                     </div>
-                    <button 
+                    <button
                       onClick={() => handleUpdateProgress(goal.id, goal.progress)}
                       className="text-xs font-bold uppercase hover:bg-neo-yellow px-2 py-1 transition-colors border-2 border-transparent hover:border-neo-black"
                     >
@@ -384,7 +384,7 @@ export const GoalsView: React.FC = () => {
               </div>
             );
           })}
-          
+
           {goals.length === 0 && (
             <div className="p-8 border-4 border-dashed border-neo-black text-center font-mono text-gray-500 uppercase bg-gray-50">
               Chưa có mục tiêu nào. Hãy thêm mới!
@@ -404,17 +404,17 @@ export const GoalsView: React.FC = () => {
                   const isOverdue = item.daysLeft < 0;
                   const isUrgent = item.daysLeft >= 0 && item.daysLeft <= 3;
                   const isSoon = item.daysLeft > 3 && item.daysLeft <= 7;
-                  
+
                   return (
-                    <div 
-                      key={i} 
+                    <div
+                      key={i}
                       className={`flex gap-3 items-start group p-2 border-2 transition-all cursor-pointer
                         ${isOverdue ? 'border-neo-red bg-red-50' : isUrgent ? 'border-neo-orange bg-orange-50' : isSoon ? 'border-neo-yellow bg-yellow-50' : 'border-transparent hover:border-neo-black hover:shadow-hard-sm'}
                       `}
                     >
-                      <Icon 
-                        name={item.type === 'goal' ? 'flag' : 'check_circle'} 
-                        size={20} 
+                      <Icon
+                        name={item.type === 'goal' ? 'flag' : 'check_circle'}
+                        size={20}
                         className={isOverdue ? 'text-neo-red' : isUrgent ? 'text-neo-orange' : ''}
                       />
                       <div className="flex-1 min-w-0">
