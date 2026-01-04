@@ -367,7 +367,7 @@ export const FocusView: React.FC = () => {
                   )}
                 </div>
 
-                <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="flex items-center gap-2 transition-opacity">
                   <button
                     onClick={() => setEditingTaskId(task.id)}
                     className="w-8 h-8 border border-neutral-600 hover:border-white hover:bg-white hover:text-black flex items-center justify-center transition-all"
