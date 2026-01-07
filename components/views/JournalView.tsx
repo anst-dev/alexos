@@ -8,8 +8,12 @@ import { Icon } from '../ui/Icon';
 export const JournalView: React.FC = () => {
   const { addJournalEntry, journalEntries, deleteJournalEntry, updateJournalEntry } = useApp();
   const { showToast } = useToast();
-  const [content, setContent] = useState('');
-  const [insight, setInsight] = useState('');
+  
+  // 3 câu hỏi cốt lõi
+  const [mostValuable, setMostValuable] = useState(''); // Việc nào hôm nay đáng giá nhất?
+  const [mostBlameworthy, setMostBlameworthy] = useState(''); // Sai lầm nào đáng trách nhất?
+  const [wouldChange, setWouldChange] = useState(''); // Nếu được làm lại, tôi sẽ thay đổi điều gì?
+  
   const [activeMood, setActiveMood] = useState('Bận');
   const [showHistory, setShowHistory] = useState(false);
 
@@ -22,14 +26,28 @@ export const JournalView: React.FC = () => {
   const moods = ['Vui', 'Bình tĩnh', 'Bận', 'Mệt'];
 
   const handleSave = () => {
-     if (content.trim() || insight.trim()) {
-        const fullContent = `${content}\n\n// BÀI HỌC:\n${insight}`;
+     if (mostValuable.trim() || mostBlameworthy.trim() || wouldChange.trim()) {
+        // Định dạng nội dung với 3 câu hỏi cốt lõi
+        const fullContent = [
+          '📌 VIỆC ĐÁNG GIÁ NHẤT:',
+          mostValuable.trim() || '(chưa ghi)',
+          '',
+          '⚠️ SAI LẦM ĐÁNG TRÁCH NHẤT:',
+          mostBlameworthy.trim() || '(chưa ghi)',
+          '',
+          '🔄 NẾU LÀM LẠI, SẼ THAY ĐỔI:',
+          wouldChange.trim() || '(chưa ghi)',
+        ].join('\n');
+        
         addJournalEntry(fullContent, activeMood);
-        setContent('');
-        setInsight('');
+        setMostValuable('');
+        setMostBlameworthy('');
+        setWouldChange('');
         showToast('Đã lưu nhật ký!', 'success');
      }
   };
+
+  const hasContent = mostValuable.trim() || mostBlameworthy.trim() || wouldChange.trim();
 
   // Edit handlers
   const openEditModal = (entry: JournalEntry) => {
@@ -74,7 +92,7 @@ export const JournalView: React.FC = () => {
           <div className="bg-neo-yellow p-8 border-t-4 border-neo-black flex justify-between items-end">
              <div>
                 <h2 className="text-5xl md:text-7xl font-display font-black uppercase leading-[0.85] tracking-tighter mb-4 text-black">
-                    Viết đi,<br/>Đừng ngại.
+                    3 Câu Hỏi<br/>Mỗi Tối
                 </h2>
                 <p className="font-mono font-bold text-sm md:text-base">// {journalEntries.length} BÀI VIẾT ĐÃ LƯU</p>
              </div>
@@ -150,40 +168,59 @@ export const JournalView: React.FC = () => {
              </div>
           </section>
 
-          {/* Content */}
+          {/* Câu hỏi 1: Việc đáng giá nhất */}
           <section>
-             <div className="flex justify-between items-center bg-neo-black text-white p-3 border-4 border-neo-black border-b-0">
+             <div className="flex justify-between items-center bg-neo-lime text-black p-3 border-4 border-neo-black border-b-0">
                 <h3 className="text-xl font-black uppercase flex items-center gap-2">
-                   <Icon name="favorite" size={20} />
-                   Nội dung chính
+                   <Icon name="star" size={20} />
+                   Việc nào hôm nay đáng giá nhất?
                 </h3>
-                <span className="font-mono text-xs">PHẦN_01</span>
+                <span className="font-mono text-xs">CÂU_HỎI_01</span>
              </div>
              <div className="relative border-4 border-neo-black bg-white shadow-hard group">
                 <textarea 
-                  value={content}
-                  onChange={(e) => setContent(e.target.value)}
-                  className="w-full h-48 p-6 font-mono text-sm md:text-base resize-none focus:outline-none focus:bg-yellow-50 transition-colors"
-                  placeholder="HÔM NAY CÓ GÌ VUI..."
+                  value={mostValuable}
+                  onChange={(e) => setMostValuable(e.target.value)}
+                  className="w-full h-32 p-6 font-mono text-sm md:text-base resize-none focus:outline-none focus:bg-yellow-50 transition-colors"
+                  placeholder="Thành tựu, việc làm tốt, điều đáng tự hào hôm nay..."
                 ></textarea>
              </div>
           </section>
 
-          {/* Insight */}
+          {/* Câu hỏi 2: Sai lầm đáng trách nhất */}
           <section>
-             <div className="flex justify-between items-center bg-white text-black p-3 border-4 border-neo-black border-b-0">
+             <div className="flex justify-between items-center bg-neo-red text-white p-3 border-4 border-neo-black border-b-0">
                 <h3 className="text-xl font-black uppercase flex items-center gap-2">
-                   <Icon name="lightbulb" size={20} />
-                   Bài học rút ra
+                   <Icon name="warning" size={20} />
+                   Sai lầm nào đáng trách nhất?
                 </h3>
-                <span className="font-mono text-xs">PHẦN_02</span>
+                <span className="font-mono text-xs">CÂU_HỎI_02</span>
              </div>
              <div className="relative border-4 border-neo-black bg-white shadow-hard group">
                 <textarea 
-                  value={insight}
-                  onChange={(e) => setInsight(e.target.value)}
-                  className="w-full h-48 p-6 font-mono text-sm md:text-base resize-none focus:outline-none focus:bg-yellow-50 transition-colors"
-                  placeholder="GHI LẠI MỘT ĐIỀU MỚI HỌC ĐƯỢC..."
+                  value={mostBlameworthy}
+                  onChange={(e) => setMostBlameworthy(e.target.value)}
+                  className="w-full h-32 p-6 font-mono text-sm md:text-base resize-none focus:outline-none focus:bg-red-50 transition-colors"
+                  placeholder="Lỗi sai, quyết định tệ, điều hối tiếc hôm nay..."
+                ></textarea>
+             </div>
+          </section>
+
+          {/* Câu hỏi 3: Nếu làm lại, sẽ thay đổi điều gì */}
+          <section>
+             <div className="flex justify-between items-center bg-neo-blue text-white p-3 border-4 border-neo-black border-b-0">
+                <h3 className="text-xl font-black uppercase flex items-center gap-2">
+                   <Icon name="autorenew" size={20} />
+                   Nếu được làm lại, tôi sẽ thay đổi điều gì?
+                </h3>
+                <span className="font-mono text-xs">CÂU_HỎI_03</span>
+             </div>
+             <div className="relative border-4 border-neo-black bg-white shadow-hard group">
+                <textarea 
+                  value={wouldChange}
+                  onChange={(e) => setWouldChange(e.target.value)}
+                  className="w-full h-32 p-6 font-mono text-sm md:text-base resize-none focus:outline-none focus:bg-blue-50 transition-colors"
+                  placeholder="Bài học rút ra, cách tiếp cận khác, điều sẽ làm tốt hơn..."
                 ></textarea>
              </div>
           </section>
@@ -193,18 +230,19 @@ export const JournalView: React.FC = () => {
        <div className="fixed bottom-0 left-0 md:left-72 right-0 bg-white border-t-4 border-neo-black p-0 z-10">
           <div className="flex h-20 items-stretch">
              <button 
-               onClick={() => { setContent(''); setInsight(''); }}
+               onClick={() => { setMostValuable(''); setMostBlameworthy(''); setWouldChange(''); }}
                className="w-1/3 md:w-auto px-8 md:px-12 font-mono font-bold uppercase hover:bg-neo-red hover:text-white border-r-4 border-neo-black flex items-center justify-center gap-2 transition-colors"
              >
                 <Icon name="delete" size={20} />
                 <span className="hidden sm:inline">Hủy</span>
              </button>
              <div className="flex-1 flex items-center justify-center bg-gray-50 text-gray-400 font-mono font-bold uppercase text-xs">
-                <span className="animate-pulse mr-2">●</span> Sẵn sàng lưu
+                <span className="animate-pulse mr-2">●</span> {hasContent ? '3 câu hỏi cốt lõi' : 'Sẵn sàng lưu'}
              </div>
              <button 
                onClick={handleSave}
-               className="w-1/2 md:w-auto px-12 md:px-20 bg-neo-black text-white hover:bg-neo-lime hover:text-black font-black uppercase text-xl flex items-center justify-center gap-2 transition-colors border-l-4 border-neo-black"
+               disabled={!hasContent}
+               className="w-1/2 md:w-auto px-12 md:px-20 bg-neo-black text-white hover:bg-neo-lime hover:text-black font-black uppercase text-xl flex items-center justify-center gap-2 transition-colors border-l-4 border-neo-black disabled:opacity-50 disabled:cursor-not-allowed"
              >
                 <span>Lưu lại</span>
                 <Icon name="arrow_forward" size={20} />

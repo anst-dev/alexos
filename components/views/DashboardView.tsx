@@ -157,12 +157,21 @@ export const DashboardView: React.FC = () => {
   const [logs, setLogs] = useState<LogEntry[]>([]);
   const [isLoadingLogs, setIsLoadingLogs] = useState(false);
 
-  // State để quản lý thu nhỏ/mở rộng các nhóm ngày
-  const [collapsedDays, setCollapsedDays] = useState<Set<string>>(new Set());
+  // Lấy ngày hiện tại để so sánh
+  const todayDateKey = useMemo(() => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }, []);
+
+  // State để quản lý mở rộng các nhóm ngày (mặc định chỉ ngày hiện tại mở)
+  const [expandedDays, setExpandedDays] = useState<Set<string>>(new Set([todayDateKey]));
 
   // Toggle thu nhỏ/mở rộng nhóm ngày
-  const toggleDayCollapse = useCallback((dateKey: string) => {
-    setCollapsedDays(prev => {
+  const toggleDayExpand = useCallback((dateKey: string) => {
+    setExpandedDays(prev => {
       const newSet = new Set(prev);
       if (newSet.has(dateKey)) {
         newSet.delete(dateKey);
@@ -565,7 +574,7 @@ export const DashboardView: React.FC = () => {
           ) : (
             <div className="space-y-4 max-h-[500px] overflow-y-auto overflow-x-hidden min-w-0">
               {groupLogsByDate(logs).map((group) => {
-                const isCollapsed = collapsedDays.has(group.date);
+                const isExpanded = expandedDays.has(group.date);
 
                 return (
                   <div key={group.date} className="border-2 border-neo-black min-w-0">
@@ -573,11 +582,11 @@ export const DashboardView: React.FC = () => {
                     <div className="bg-neo-black text-white px-4 py-2 font-mono font-bold uppercase flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <button
-                          onClick={() => toggleDayCollapse(group.date)}
+                          onClick={() => toggleDayExpand(group.date)}
                           className="hover:bg-white/20 p-1 rounded transition-all"
-                          title={isCollapsed ? "Mở rộng" : "Thu nhỏ"}
+                          title={isExpanded ? "Thu nhỏ" : "Mở rộng"}
                         >
-                          <Icon name={isCollapsed ? "chevron_down" : "minus"} size={16} />
+                          <Icon name={isExpanded ? "expand_less" : "expand_more"} size={16} />
                         </button>
                         <Icon name="calendar_today" size={16} />
                         <span>{group.dateLabel}</span>
@@ -591,8 +600,8 @@ export const DashboardView: React.FC = () => {
                         <Icon name="copy" size={16} />
                       </button>
                     </div>
-                    {/* Logs trong ngày - ẩn nếu collapsed */}
-                    {!isCollapsed && (
+                    {/* Logs trong ngày - ẩn nếu không expanded */}
+                    {isExpanded && (
                       <div className="divide-y divide-gray-200 min-w-0">
                         {group.logs.map((log, index) => {
                           const fromTimeValue = getFromTime(log, logs);
@@ -601,13 +610,15 @@ export const DashboardView: React.FC = () => {
                           const content = log['nội dung'] || '';
                           const showFromTime = fromTime !== '--:--';
                           const duration = calculateDuration(fromTimeValue, log['Thời gian']);
+                          const topic = log.topic || '';
+                          const category = log.Category || '';
 
                           return (
                             <div
                               key={`${group.date}-${index}`}
-                              className="px-4 py-2 bg-white hover:bg-gray-50 transition-all min-w-0"
+                              className="px-4 py-2 bg-white hover:bg-gray-50 transition-all min-w-0 group/item"
                             >
-                              {/* Thời gian: Từ → Đến + Duration */}
+                              {/* Thời gian: Từ → Đến + Duration + Topic + Category */}
                               <div className="flex items-center gap-1 flex-wrap mb-1">
                                 {showFromTime && (
                                   <span className="font-mono text-xs bg-neo-lime px-2 py-0.5 border border-neo-black font-bold">
@@ -626,6 +637,26 @@ export const DashboardView: React.FC = () => {
                                     {duration}
                                   </span>
                                 )}
+                                {/* Hiển thị Topic */}
+                                {topic && (
+                                  <span className="font-mono text-xs bg-neo-orange text-white px-2 py-0.5 border border-neo-black font-bold">
+                                    {topic}
+                                  </span>
+                                )}
+                                {/* Hiển thị Category */}
+                                {category && (
+                                  <span className="font-mono text-xs bg-neo-purple text-white px-2 py-0.5 border border-neo-black font-bold">
+                                    {category}
+                                  </span>
+                                )}
+                                {/* Nút Copy */}
+                                <button
+                                  onClick={() => copySingleLog(log)}
+                                  className="ml-auto opacity-0 group-hover/item:opacity-100 hover:bg-neo-lime p-1 rounded transition-all border border-transparent hover:border-neo-black"
+                                  title="Copy ghi chú này"
+                                >
+                                  <Icon name="content_copy" size={14} />
+                                </button>
                               </div>
                               {/* Nội dung - xuống dòng trên mobile */}
                               <p className="font-mono text-sm whitespace-pre-wrap break-all">{content}</p>
