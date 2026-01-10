@@ -410,9 +410,9 @@ export const DashboardView: React.FC = () => {
       {/* Header Section */}
       <header className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12 border-b-4 border-neo-black pb-8">
         <div>
-          <h1 className="text-6xl md:text-8xl font-display font-black uppercase leading-[0.85] italic mb-4">
+          {/* <h1 className="text-6xl md:text-8xl font-display font-black uppercase leading-[0.85] italic mb-4">
             Wake<br />Up.
-          </h1>
+          </h1> */}
           <div className="inline-flex items-center gap-4 bg-white border-l-4 border-neo-lime pl-4 py-2">
             <span className="font-mono text-xl font-bold uppercase">{today}</span>
             <span className="font-black text-xl">///</span>
@@ -420,14 +420,14 @@ export const DashboardView: React.FC = () => {
           </div>
         </div>
 
-        <div className="w-full md:w-80 bg-white border-2 border-neo-black p-4 shadow-hard">
+        {/* <div className="w-full md:w-80 bg-white border-2 border-neo-black p-4 shadow-hard">
           <div className="flex justify-between items-end mb-2">
             <span className="font-mono text-sm font-bold uppercase">Tiến độ tổng</span>
             <span className="font-display text-2xl font-black">{overallProgress}%</span>
           </div>
           <ProgressBar progress={overallProgress} colorClass="bg-neo-orange" />
           <p className="text-xs font-mono text-gray-500 mt-2">{goals.length} mục tiêu đang theo dõi</p>
-        </div>
+        </div> */}
       </header>
 
 
