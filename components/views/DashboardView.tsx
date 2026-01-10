@@ -8,7 +8,7 @@ import { formatDeadlineDisplay, getDaysLeft } from '../../types';
 import { QuickNoteSection } from './QuickNoteSection';
 
 // API URL để lấy danh sách log
-const GET_ALL_LOGS_URL = 'https://unsupercilious-leonarda-unreaving.ngrok-free.dev/webhook/GetAllLogTrang';
+const GET_ALL_LOGS_URL = 'https://unsupercilious-leonarda-unreaving.ngrok-free.dev/webhook/GetAllLogTimeSheet';
 // Flag để enable/disable API calls
 const ENABLE_QUICK_NOTE_API = true;
 

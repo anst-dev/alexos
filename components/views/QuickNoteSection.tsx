@@ -3,12 +3,12 @@ import { Icon } from '../ui/Icon';
 import { useToast } from '../../context/ToastContext';
 
 // Webhook URL cho ghi chú nhanh
-const QUICK_NOTE_WEBHOOK_URL = 'https://unsupercilious-leonarda-unreaving.ngrok-free.dev/webhook/logTimeTrang';
+const QUICK_NOTE_WEBHOOK_URL = 'https://unsupercilious-leonarda-unreaving.ngrok-free.dev/webhook/AddLog';
 const ENABLE_QUICK_NOTE_API = true;
 
 // Các options cho phân loại và chi tiết
-const PHAN_LOAI_OPTIONS = ['Kinh doanh', 'Cá nhân','Tiếng trung'] as const;
-const CHI_TIET_OPTIONS = ['note','task', 'đáng giá nhất?', 'đáng trách nhất?', 'làm lại, thay đổi điều gì?'] as const;
+const PHAN_LOAI_OPTIONS = ['Công ty', 'Cá nhân'] as const;
+const CHI_TIET_OPTIONS = ['task', 'đáng giá nhất?', 'đáng trách nhất?', 'làm lại, thay đổi điều gì?'] as const;
 
 type PhanLoai = typeof PHAN_LOAI_OPTIONS[number];
 type ChiTiet = typeof CHI_TIET_OPTIONS[number];
@@ -19,7 +19,7 @@ interface QuickNoteSectionProps {
 
 export const QuickNoteSection: React.FC<QuickNoteSectionProps> = React.memo(({ onNoteSubmitted }) => {
     const [quickNote, setQuickNote] = useState('');
-    const [phanLoai, setPhanLoai] = useState<PhanLoai>('Cá nhân');
+    const [phanLoai, setPhanLoai] = useState<PhanLoai>('Công ty');
     const [chiTiet, setChiTiet] = useState<ChiTiet>('task');
     const [isSubmittingNote, setIsSubmittingNote] = useState(false);
     const { showToast } = useToast();
