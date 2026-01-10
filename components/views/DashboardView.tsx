@@ -503,40 +503,7 @@ export const DashboardView: React.FC = () => {
           </div>
         </section>
 
-        {/* Upcoming Deadlines Quick View */}
-        <section>
-          <BrutalCard title="Sắp tới" icon="calendar_today" collapsible>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {upcomingDeadlines.slice(0, 4).map((item, i) => {
-                const isOverdue = item.daysLeft < 0;
-                const isUrgent = item.daysLeft >= 0 && item.daysLeft <= 3;
-
-                return (
-                  <div
-                    key={i}
-                    className={`p-4 border-2 border-neo-black ${isOverdue ? 'bg-red-50 border-neo-red' : isUrgent ? 'bg-orange-50 border-neo-orange' : 'bg-white'}`}
-                  >
-                    <div className="flex items-center gap-2 mb-2">
-                      <Icon name={item.type === 'goal' ? 'flag' : 'check_circle'} size={16} />
-                      <span className={`font-mono text-xs font-bold ${isOverdue ? 'text-neo-red' : isUrgent ? 'text-neo-orange' : 'text-gray-500'}`}>
-                        {formatDeadlineDisplay(item.deadline)}
-                      </span>
-                    </div>
-                    <p className="font-bold text-sm uppercase truncate">
-                      {item.type === 'milestone' ? item.milestoneTitle : item.goalTitle}
-                    </p>
-                    {item.type === 'milestone' && (
-                      <p className="text-xs text-gray-500 truncate">{item.goalTitle}</p>
-                    )}
-                  </div>
-                );
-              })}
-              {upcomingDeadlines.length === 0 && (
-                <p className="col-span-2 text-center font-mono text-gray-500 py-4">Không có deadline sắp tới</p>
-              )}
-            </div>
-          </BrutalCard>
-        </section>
+      
       </div>
 
       {/* Quick Note Section - Ghi Chú Nhanh (Component riêng để tránh re-render) */}
@@ -673,6 +640,41 @@ export const DashboardView: React.FC = () => {
         </BrutalCard>
       </section>
 
+  {/* Upcoming Deadlines Quick View */}
+        <section>
+          <BrutalCard title="Sắp tới" icon="calendar_today" collapsible>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {upcomingDeadlines.slice(0, 4).map((item, i) => {
+                const isOverdue = item.daysLeft < 0;
+                const isUrgent = item.daysLeft >= 0 && item.daysLeft <= 3;
+
+                return (
+                  <div
+                    key={i}
+                    className={`p-4 border-2 border-neo-black ${isOverdue ? 'bg-red-50 border-neo-red' : isUrgent ? 'bg-orange-50 border-neo-orange' : 'bg-white'}`}
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      <Icon name={item.type === 'goal' ? 'flag' : 'check_circle'} size={16} />
+                      <span className={`font-mono text-xs font-bold ${isOverdue ? 'text-neo-red' : isUrgent ? 'text-neo-orange' : 'text-gray-500'}`}>
+                        {formatDeadlineDisplay(item.deadline)}
+                      </span>
+                    </div>
+                    <p className="font-bold text-sm uppercase truncate">
+                      {item.type === 'milestone' ? item.milestoneTitle : item.goalTitle}
+                    </p>
+                    {item.type === 'milestone' && (
+                      <p className="text-xs text-gray-500 truncate">{item.goalTitle}</p>
+                    )}
+                  </div>
+                );
+              })}
+              {upcomingDeadlines.length === 0 && (
+                <p className="col-span-2 text-center font-mono text-gray-500 py-4">Không có deadline sắp tới</p>
+              )}
+            </div>
+          </BrutalCard>
+        </section>
+        
       {/* Grid Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-12">
         {/* Daily Routine Summary */}
